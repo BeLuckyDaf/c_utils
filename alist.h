@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <string.h>
 
-typedef struct array_list {
+struct array_list {
     size_t size;
     size_t count;
     void** array;
