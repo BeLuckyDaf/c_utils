@@ -9,9 +9,9 @@
 
 #include "alist.h"
 
-p_array_list create_array_list(size_t size) {
+p_array_list array_list_create(size_t size) {
     void** array = (void**)malloc(sizeof(void*) * size);
-    p_array_list alist = (p_array_list)malloc(sizeof(array_list));
+    p_array_list alist = (p_array_list)malloc(sizeof(struct array_list));
     memset(array, 0, sizeof(void*) * size);
     alist->size = size;
     alist->count = 0;
@@ -19,12 +19,12 @@ p_array_list create_array_list(size_t size) {
     return alist;
 }
 
-void delete_array_list(p_array_list alist) {
+void array_list_free(p_array_list alist) {
     free(alist->array);
     free(alist);
 }
 
-size_t expand_array_list(p_array_list alist) {
+size_t _expand_array_list(p_array_list alist) {
     size_t size = alist->size;
     size_t new_size = size * 2;
     void** array = (void**)malloc(sizeof(void*) * new_size);
@@ -44,7 +44,7 @@ int array_list_add(p_array_list alist, void* item) {
             return i;
         }
     }
-    int index = (int) ((expand_array_list(alist) / 2) + 1);
+    int index = (int) ((_expand_array_list(alist) / 2) + 1);
     alist->array[index] = item;
     alist->count++;
     return index;
@@ -88,8 +88,8 @@ void* array_list_get(p_array_list alist, int index) {
     return alist->array[index];
 }
 
-void array_list_free_all(p_array_list alist){
-    for (int i = array_list_iter(alist);i!=-1;i = array_list_next(alist,i)){
+void array_list_free_members(p_array_list alist){
+    for (int i = array_list_iter(alist); i >= 0; i = array_list_next(alist, i)) {
         void* current = array_list_get(alist, i);
         free(current);
         array_list_remove_at(alist, i);

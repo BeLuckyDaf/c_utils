@@ -14,23 +14,25 @@
 #include <unistd.h>
 #include <string.h>
 
-typedef struct {
+typedef struct array_list {
     size_t size;
     size_t count;
     void** array;
-} array_list;
+};
 
-typedef array_list* p_array_list;
+typedef struct array_list * p_array_list;
 
-p_array_list create_array_list(size_t size);
-void delete_array_list(p_array_list alist);
-size_t expand_array_list(p_array_list alist);
+p_array_list array_list_create(size_t size);
+void array_list_free(p_array_list alist);
+void array_list_free_members(p_array_list alist);
+
+size_t _expand_array_list(p_array_list alist);
+
 int array_list_add(p_array_list alist, void* item);
 int array_list_remove(p_array_list alist, void* item);
 int array_list_remove_at(p_array_list alist, int index);
 int array_list_iter(p_array_list alist);
 int array_list_next(p_array_list alist, int iter);
 void* array_list_get(p_array_list alist, int index);
-void array_list_free_all(p_array_list alist);
 
 #endif // _ALIST_H_
